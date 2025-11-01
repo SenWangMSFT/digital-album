@@ -6,6 +6,85 @@ const Album = () => {
   // Get base path for GitHub Pages deployment
   const basePath = import.meta.env.BASE_URL;
   
+  // Photo captions/text for the back of each photo
+  const photoTexts = [
+    {
+      title: "Album Cover",
+      description: "A collection of beautiful memories",
+      date: "2025"
+    },
+    {
+      title: "Memory #1",
+      description: "A beautiful moment captured in time, filled with joy and laughter.",
+      date: "Spring 2025"
+    },
+    {
+      title: "Memory #2",
+      description: "Adventures and explorations that made this day unforgettable.",
+      date: "Summer 2025"
+    },
+    {
+      title: "Memory #3",
+      description: "Cherished moments with loved ones, creating lasting memories.",
+      date: "Summer 2025"
+    },
+    {
+      title: "Memory #4",
+      description: "The beauty of nature captured in a perfect frame.",
+      date: "Fall 2025"
+    },
+    {
+      title: "Memory #5",
+      description: "Spontaneous adventures that become the best stories.",
+      date: "Fall 2025"
+    },
+    {
+      title: "Memory #6",
+      description: "Simple moments that mean the world to us.",
+      date: "Fall 2025"
+    },
+    {
+      title: "Memory #7",
+      description: "Celebrating life's precious moments together.",
+      date: "Winter 2025"
+    },
+    {
+      title: "Memory #8",
+      description: "Capturing the essence of happiness in a single frame.",
+      date: "Winter 2025"
+    },
+    {
+      title: "Memory #9",
+      description: "A day filled with laughter, love, and endless smiles.",
+      date: "Winter 2025"
+    },
+    {
+      title: "Memory #10",
+      description: "These are the moments we live for and never forget.",
+      date: "Spring 2025"
+    },
+    {
+      title: "Memory #11",
+      description: "Creating memories that will last a lifetime.",
+      date: "Spring 2025"
+    },
+    {
+      title: "Memory #12",
+      description: "Every picture tells a story worth remembering.",
+      date: "Spring 2025"
+    },
+    {
+      title: "Memory #13",
+      description: "The journey continues with more beautiful moments ahead.",
+      date: "Summer 2025"
+    },
+    {
+      title: "Memory #14",
+      description: "Grateful for every moment captured and shared.",
+      date: "Summer 2025"
+    }
+  ];
+  
   // Photo data with front cover and photos 0-13
   const photos = [
     { id: 'front', src: `${basePath}photos/front.jpg`, isCover: true },
@@ -19,10 +98,12 @@ const Album = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
   const [backgroundColors, setBackgroundColors] = useState(
     Array(photos.length).fill('linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d4f1f4 100%)')
   );
   const canvasRef = useRef(null);
+  const lastTapRef = useRef(0);
 
   // Extract dominant colors from image
   const extractColors = (imageSrc, index) => {
@@ -112,7 +193,23 @@ const Album = () => {
     if (newPage >= 0 && newPage < photos.length) {
       setDirection(newDirection);
       setCurrentPage(newPage);
+      setIsFlipped(false); // Reset flip when changing pages
     }
+  };
+
+  // Handle double tap to flip photo
+  const handleDoubleTap = () => {
+    if (currentPhoto.isCover) return; // Don't flip cover page
+    
+    const now = Date.now();
+    const timeSinceLastTap = now - lastTapRef.current;
+    
+    if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+      // Double tap detected
+      setIsFlipped(!isFlipped);
+    }
+    
+    lastTapRef.current = now;
   };
 
   const swipeConfidenceThreshold = 10000;
@@ -188,21 +285,44 @@ const Album = () => {
                 }
               }}
               className={`album-page ${currentPhoto.isCover ? 'cover-page' : ''}`}
+              onClick={handleDoubleTap}
             >
-              <div className="photo-container">
-                <img 
-                  src={currentPhoto.src} 
-                  alt={`Photo ${currentPhoto.id}`}
-                  className="photo-image"
-                  draggable="false"
-                />
-                {currentPhoto.isCover && (
-                  <div className="cover-overlay">
-                    <h1 className="album-title">Jun's Photo Album</h1>
-                    <p className="album-subtitle">A Collection of Memories</p>
+              <motion.div 
+                className="photo-flip-container"
+                animate={{ rotateY: isFlipped ? 180 : 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                {/* Front of photo */}
+                <div className="photo-front">
+                  <div className="photo-container">
+                    <img 
+                      src={currentPhoto.src} 
+                      alt={`Photo ${currentPhoto.id}`}
+                      className="photo-image"
+                      draggable="false"
+                    />
+                    {currentPhoto.isCover && (
+                      <div className="cover-overlay">
+                        <h1 className="album-title">Jun's Photo Album</h1>
+                        <p className="album-subtitle">A Collection of Memories</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Back of photo with text */}
+                {!currentPhoto.isCover && (
+                  <div className="photo-back">
+                    <div className="photo-text-content">
+                      <h2 className="photo-text-title">{photoTexts[currentPage].title}</h2>
+                      <p className="photo-text-description">{photoTexts[currentPage].description}</p>
+                      <p className="photo-text-date">{photoTexts[currentPage].date}</p>
+                    </div>
+                    <div className="flip-hint">Double tap to flip back</div>
                   </div>
                 )}
-              </div>
+              </motion.div>
               
               {/* Page shadow for depth */}
               <div className="page-shadow"></div>

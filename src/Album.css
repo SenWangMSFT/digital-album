@@ -146,6 +146,96 @@
   background: transparent;
 }
 
+/* Photo Flip Container */
+.photo-flip-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Front and Back of Photo */
+.photo-front,
+.photo-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.photo-front {
+  transform: rotateY(0deg);
+}
+
+.photo-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+  border-radius: 16px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    0 10px 20px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+/* Photo Text Content */
+.photo-text-content {
+  text-align: center;
+  color: #1e293b;
+  max-width: 500px;
+}
+
+.photo-text-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.photo-text-description {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+  color: #475569;
+  font-weight: 400;
+}
+
+.photo-text-date {
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  color: #94a3b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+/* Flip Hint */
+.flip-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.875rem;
+  color: #94a3b8;
+  opacity: 0.7;
+  animation: pulse-hint 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.4; }
+}
+
 /* Photo Container */
 .photo-container {
   width: 100%;
@@ -515,6 +605,18 @@
   .album-subtitle {
     font-size: clamp(0.75rem, 3vw, 1.25rem);
   }
+
+  .photo-back {
+    padding: 2rem;
+  }
+
+  .photo-text-title {
+    font-size: clamp(1.25rem, 6vw, 2rem);
+  }
+
+  .photo-text-description {
+    font-size: clamp(0.875rem, 3vw, 1.125rem);
+  }
 }
 
 @media (max-width: 480px) {
@@ -538,6 +640,15 @@
   .nav-button svg {
     width: 20px;
     height: 20px;
+  }
+
+  .photo-back {
+    padding: 1.5rem;
+  }
+
+  .flip-hint {
+    font-size: 0.75rem;
+    bottom: 1.5rem;
   }
 }
 
