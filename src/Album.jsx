@@ -3,12 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './Album.css';
 
 const Album = () => {
+  // Get base path for GitHub Pages deployment
+  const basePath = import.meta.env.BASE_URL;
+  
   // Photo data with front cover and photos 0-13
   const photos = [
-    { id: 'front', src: '/photos/front.jpg', isCover: true },
+    { id: 'front', src: `${basePath}photos/front.jpg`, isCover: true },
     ...Array.from({ length: 14 }, (_, i) => ({ 
       id: i, 
-      src: `/photos/${i}.jpg`,
+      src: `${basePath}photos/${i}.jpg`,
       isCover: false 
     }))
   ];
