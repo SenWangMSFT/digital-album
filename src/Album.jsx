@@ -14,74 +14,74 @@ const Album = () => {
       date: "2025"
     },
     {
-      title: "Memory #1",
-      description: "A beautiful moment captured in time, filled with joy and laughter.",
-      date: "Spring 2025"
+      title: "土匪穿搭😈",
+      description: "第一次在小红书刷到你的照片，感觉你又酷，又有点坏坏的你开始住进了我的脑海里",
+      date: "😈"
     },
     {
-      title: "Memory #2",
-      description: "Adventures and explorations that made this day unforgettable.",
-      date: "Summer 2025"
+      title: "Gaspe 游玩",
+      description: "看到你去gaspe的照片，阳光下笑的好真，好自然。干净的笑容让我❤️都化了。",
+      date: "🚗"
     },
     {
-      title: "Memory #3",
-      description: "Cherished moments with loved ones, creating lasting memories.",
-      date: "Summer 2025"
+      title: "Gaspe 游玩",
+      description: "看到你去gaspe的照片，阳光下笑的好真，好自然。干净的笑容让我❤️都化了。",
+      date: "🚗"
     },
     {
-      title: "Memory #4",
-      description: "The beauty of nature captured in a perfect frame.",
-      date: "Fall 2025"
+      title: "第一次见面",
+      description: "第一次见到你， 你比照片还好看！你认真，谦虚，对自己要求高。啊。。他好真诚， 我真的好喜欢这种感觉。",
+      date: "🌗"
     },
     {
-      title: "Memory #5",
-      description: "Spontaneous adventures that become the best stories.",
-      date: "Fall 2025"
+      title: "第一次去你家",
+      description: "这是你急急忙忙给我倒饮料的照片。 这个人要是对我笑一下， 我就彻底没救了！",
+      date: "🏠"
     },
     {
-      title: "Memory #6",
-      description: "Simple moments that mean the world to us.",
-      date: "Fall 2025"
+      title: "君君给我发的第一张自拍（和第二张自拍）",
+      description: "干净的眼神，干净的笑容，让我忍不住看了好几遍。",
+      date: "📷"
     },
     {
-      title: "Memory #7",
-      description: "Celebrating life's precious moments together.",
-      date: "Winter 2025"
+      title: "君君给我发的第一张自拍（和第二张自拍）",
+      description: "干净的眼神，干净的笑容，让我忍不住看了好几遍。",
+      date: "📷"
     },
     {
-      title: "Memory #8",
-      description: "Capturing the essence of happiness in a single frame.",
-      date: "Winter 2025"
+      title: "一些throwback",
+      description: "你发来的旧照片，每一张都好帅。有一点小成熟，有一点少年感。怎么以前到现在都这么让人心动 ❤️",
+      date: "🗓️"
     },
     {
-      title: "Memory #9",
-      description: "A day filled with laughter, love, and endless smiles.",
-      date: "Winter 2025"
+      title: "一些throwback",
+      description: "你发来的旧照片，每一张都好帅。有一点小成熟，有一点少年感。怎么以前到现在都这么让人心动 ❤️",
+      date: "🗓️"
     },
     {
-      title: "Memory #10",
-      description: "These are the moments we live for and never forget.",
-      date: "Spring 2025"
+      title: "一些throwback",
+      description: "你发来的旧照片，每一张都好帅。有一点小成熟，有一点少年感。怎么以前到现在都这么让人心动 ❤️",
+      date: "🗓️"
     },
     {
-      title: "Memory #11",
-      description: "Creating memories that will last a lifetime.",
-      date: "Spring 2025"
+      title: "君君的lab",
+      description: "What happened in the lab, stays in the lab 嘿嘿。",
+      date: "😈"
     },
     {
-      title: "Memory #12",
-      description: "Every picture tells a story worth remembering.",
-      date: "Spring 2025"
+      title: "君君做饭",
+      description: "你做的饭我真的好爱吃！每次都吃的特别幸福！在我的世界里，你是全世界最会做饭的人！",
+      date: "🍳"
     },
     {
-      title: "Memory #13",
-      description: "The journey continues with more beautiful moments ahead.",
-      date: "Summer 2025"
+      title: "君君做饭",
+      description: "你做的饭我真的好爱吃！每次都吃的特别幸福！在我的世界里，你是全世界最会做饭的人！",
+      date: "🍳"
     },
     {
-      title: "Memory #14",
-      description: "Grateful for every moment captured and shared.",
-      date: "Summer 2025"
+      title: "What's next...",
+      description: "Let's make memories together ❤️",
+      date: "💌"
     }
   ];
   
@@ -102,6 +102,8 @@ const Album = () => {
   const [backgroundColors, setBackgroundColors] = useState(
     Array(photos.length).fill('linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d4f1f4 100%)')
   );
+  const [showGiftBox, setShowGiftBox] = useState(false);
+  const [giftBoxOpened, setGiftBoxOpened] = useState(false);
   const canvasRef = useRef(null);
   const lastTapRef = useRef(0);
 
@@ -188,18 +190,23 @@ const Album = () => {
     loadColors();
   }, []);
 
-  const paginate = (newDirection) => {
-    const newPage = currentPage + newDirection;
-    if (newPage >= 0 && newPage < photos.length) {
-      setDirection(newDirection);
-      setCurrentPage(newPage);
-      setIsFlipped(false); // Reset flip when changing pages
-    }
-  };
-
   // Handle double tap to flip photo
   const handleDoubleTap = () => {
     if (currentPhoto.isCover) return; // Don't flip cover page
+    
+    // Check if it's the last picture (photo 13, index 14)
+    if (currentPage === photos.length - 1) {
+      const now = Date.now();
+      const timeSinceLastTap = now - lastTapRef.current;
+      
+      if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+        // Double tap detected on last picture - show gift box
+        setShowGiftBox(true);
+      }
+      
+      lastTapRef.current = now;
+      return;
+    }
     
     const now = Date.now();
     const timeSinceLastTap = now - lastTapRef.current;
@@ -210,6 +217,31 @@ const Album = () => {
     }
     
     lastTapRef.current = now;
+  };
+
+  // Handle gift box double click
+  const handleGiftBoxClick = () => {
+    const now = Date.now();
+    const timeSinceLastTap = now - lastTapRef.current;
+    
+    if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+      // Double click detected - open gift box
+      setGiftBoxOpened(true);
+    }
+    
+    lastTapRef.current = now;
+  };
+
+  // Reset gift box when leaving last page
+  const paginate = (newDirection) => {
+    const newPage = currentPage + newDirection;
+    if (newPage >= 0 && newPage < photos.length) {
+      setDirection(newDirection);
+      setCurrentPage(newPage);
+      setIsFlipped(false); // Reset flip when changing pages
+      setShowGiftBox(false); // Reset gift box
+      setGiftBoxOpened(false); // Reset opened state
+    }
   };
 
   const swipeConfidenceThreshold = 10000;
@@ -308,6 +340,23 @@ const Album = () => {
                         <p className="album-subtitle">A Collection of Memories</p>
                       </div>
                     )}
+                    {currentPage === photos.length - 1 && !showGiftBox && (
+                      <motion.div 
+                        className="surprise-hint"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ 
+                          delay: 0.5,
+                          duration: 0.5,
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          repeatDelay: 2
+                        }}
+                      >
+                        <span className="surprise-emoji">🎁</span>
+                        <span className="surprise-text">Double tap for a surprise!</span>
+                      </motion.div>
+                    )}
                   </div>
                 </div>
 
@@ -323,6 +372,166 @@ const Album = () => {
                   </div>
                 )}
               </motion.div>
+              
+              {/* Gift Box for Last Picture */}
+              {currentPage === photos.length - 1 && showGiftBox && (
+                <motion.div
+                  className="gift-box-overlay"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <motion.div
+                    className="gift-box-container"
+                    initial={{ scale: 0, rotateY: 0 }}
+                    animate={{ scale: 1, rotateY: 360 }}
+                    transition={{ 
+                      scale: { duration: 0.6, ease: "backOut" },
+                      rotateY: { duration: 1, ease: "easeInOut" }
+                    }}
+                    onClick={handleGiftBoxClick}
+                  >
+                    {!giftBoxOpened ? (
+                      <div className="gift-box-closed">
+                        <motion.div 
+                          className="gift-box"
+                          animate={{ 
+                            y: [0, -10, 0],
+                            rotateZ: [0, 2, -2, 0]
+                          }}
+                          transition={{ 
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        >
+                          <div className="gift-lid">
+                            <div className="gift-bow">
+                              <div className="bow-left"></div>
+                              <div className="bow-right"></div>
+                              <div className="bow-center"></div>
+                            </div>
+                          </div>
+                          <div className="gift-box-body">
+                            <div className="gift-ribbon-vertical"></div>
+                          </div>
+                          <div className="gift-sparkles">
+                            <span className="gift-sparkle"></span>
+                            <span className="gift-sparkle"></span>
+                            <span className="gift-sparkle"></span>
+                            <span className="gift-sparkle"></span>
+                          </div>
+                        </motion.div>
+                        <p className="gift-hint">Double click to open! 🎁</p>
+                      </div>
+                    ) : (
+                      <motion.div 
+                        className="gift-content"
+                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "backOut" }}
+                      >
+                        <motion.div
+                          className="confetti-container"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {[...Array(30)].map((_, i) => (
+                            <motion.div
+                              key={i}
+                              className="confetti"
+                              initial={{ 
+                                y: 0, 
+                                x: 0, 
+                                opacity: 1,
+                                rotate: 0
+                              }}
+                              animate={{ 
+                                y: [0, -200, 400],
+                                x: (Math.random() - 0.5) * 400,
+                                opacity: [1, 1, 0],
+                                rotate: Math.random() * 720
+                              }}
+                              transition={{ 
+                                duration: 2 + Math.random(),
+                                delay: Math.random() * 0.3,
+                                ease: "easeOut"
+                              }}
+                              style={{
+                                left: `${Math.random() * 100}%`,
+                                background: ['#ff6b9d', '#c44569', '#f8b500', '#ffa801', '#4fa3d1', '#9b59b6'][Math.floor(Math.random() * 6)]
+                              }}
+                            />
+                          ))}
+                        </motion.div>
+                        
+                        <div className="netflix-card">
+                          <div className="netflix-header">
+                            <div className="netflix-logo">NETFLIX</div>
+                            <h2 className="gift-title">Netflix Gift 🎬</h2>
+                          </div>
+                          
+                          <div className="netflix-content">
+                            <p className="gift-message">
+                              Let's watch movies together! ❤️
+                            </p>
+                            
+                            <div className="credentials-container">
+                              <div className="credential-field">
+                                <label>Username</label>
+                                <div className="credential-value">
+                                  <span>sen.wang.sw@outlook.com</span>
+                                  <button 
+                                    className="copy-btn"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      navigator.clipboard.writeText('sen.wang.sw@outlook.com');
+                                    }}
+                                  >
+                                    📋
+                                  </button>
+                                </div>
+                              </div>
+                              
+                              <div className="credential-field">
+                                <label>Password</label>
+                                <div className="credential-value">
+                                  <span>senlovesjun</span>
+                                  <button 
+                                    className="copy-btn"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      navigator.clipboard.writeText('senlovesjun');
+                                    }}
+                                  >
+                                    📋
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="gift-footer">
+                              <p className="enjoy-text">Enjoy unlimited movies & shows! 🍿</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          className="close-gift-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowGiftBox(false);
+                            setGiftBoxOpened(false);
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                </motion.div>
+              )}
               
               {/* Page shadow for depth */}
               <div className="page-shadow"></div>

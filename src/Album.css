@@ -276,21 +276,59 @@
 /* Cover Overlay */
 .cover-overlay {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 40%;
-  color: white;
+  padding: 3rem 2rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
   text-align: center;
-  z-index: 2;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  color: white;
+  border-radius: 0 0 12px 12px;
 }
+
+/* Surprise Hint for Last Picture */
+.surprise-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, rgba(229, 9, 20, 0.95) 0%, rgba(178, 7, 16, 0.95) 100%);
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 
+    0 10px 30px rgba(229, 9, 20, 0.5),
+    0 0 20px rgba(229, 9, 20, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.surprise-emoji {
+  font-size: 1.5rem;
+  animation: bounce-emoji 1s ease-in-out infinite;
+}
+
+@keyframes bounce-emoji {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.surprise-text {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 
 .album-title {
   font-size: clamp(2rem, 5vw, 4rem);
@@ -680,5 +718,508 @@
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .photo-image {
     image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Gift Box Overlay */
+.gift-box-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.gift-box-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+}
+
+/* Gift Box Closed State */
+.gift-box-closed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.gift-box {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+}
+
+.gift-box-body {
+  width: 200px;
+  height: 150px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border-radius: 8px;
+  position: absolute;
+  bottom: 0;
+  box-shadow: 
+    0 10px 30px rgba(231, 76, 60, 0.4),
+    inset 0 -5px 15px rgba(0, 0, 0, 0.3),
+    inset 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+
+.gift-ribbon-vertical {
+  position: absolute;
+  width: 40px;
+  height: 100%;
+  background: linear-gradient(90deg, #f39c12 0%, #e67e22 100%);
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 
+    inset 2px 0 5px rgba(255, 255, 255, 0.3),
+    inset -2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.gift-lid {
+  width: 220px;
+  height: 50px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  left: -10px;
+  box-shadow: 
+    0 5px 20px rgba(231, 76, 60, 0.5),
+    inset 0 -3px 10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.gift-bow {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bow-left,
+.bow-right {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  border-radius: 50% 0;
+  position: absolute;
+  box-shadow: 0 3px 10px rgba(243, 156, 18, 0.5);
+}
+
+.bow-left {
+  transform: rotate(-45deg);
+  left: -30px;
+}
+
+.bow-right {
+  transform: rotate(135deg);
+  right: -30px;
+}
+
+.bow-center {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 
+    0 3px 10px rgba(243, 156, 18, 0.5),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.gift-sparkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.gift-sparkle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  border-radius: 50%;
+  animation: sparkle-float 2s ease-in-out infinite;
+  box-shadow: 0 0 10px #ffd700;
+}
+
+.gift-sparkle:nth-child(1) {
+  top: 20%;
+  left: -10%;
+  animation-delay: 0s;
+}
+
+.gift-sparkle:nth-child(2) {
+  top: 40%;
+  right: -10%;
+  animation-delay: 0.5s;
+}
+
+.gift-sparkle:nth-child(3) {
+  bottom: 30%;
+  left: -15%;
+  animation-delay: 1s;
+}
+
+.gift-sparkle:nth-child(4) {
+  bottom: 50%;
+  right: -15%;
+  animation-delay: 1.5s;
+}
+
+@keyframes sparkle-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+.gift-hint {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  animation: pulse-text 1.5s ease-in-out infinite;
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes pulse-text {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+/* Gift Content (Opened State) */
+.gift-content {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  top: 50%;
+  border-radius: 2px;
+}
+
+.netflix-card {
+  background: linear-gradient(135deg, #141414 0%, #000000 100%);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 
+    0 20px 60px rgba(229, 9, 20, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  overflow: hidden;
+}
+
+.netflix-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #e50914 0%, #b20710 100%);
+}
+
+.netflix-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.netflix-logo {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #e50914;
+  letter-spacing: 0.1em;
+  font-family: 'Impact', 'Arial Black', sans-serif;
+  text-shadow: 
+    0 0 20px rgba(229, 9, 20, 0.8),
+    0 0 40px rgba(229, 9, 20, 0.5);
+  animation: netflix-glow 2s ease-in-out infinite;
+}
+
+@keyframes netflix-glow {
+  0%, 100% {
+    text-shadow: 
+      0 0 20px rgba(229, 9, 20, 0.8),
+      0 0 40px rgba(229, 9, 20, 0.5);
+  }
+  50% {
+    text-shadow: 
+      0 0 30px rgba(229, 9, 20, 1),
+      0 0 60px rgba(229, 9, 20, 0.7);
+  }
+}
+
+.gift-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  text-align: center;
+  background: linear-gradient(135deg, #fff 0%, #e50914 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.netflix-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.gift-message {
+  color: #fff;
+  font-size: 1.25rem;
+  text-align: center;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.credentials-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.credential-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.credential-field label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.credential-value {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.credential-value:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(229, 9, 20, 0.5);
+  box-shadow: 0 0 20px rgba(229, 9, 20, 0.2);
+}
+
+.credential-value span {
+  flex: 1;
+  color: #fff;
+  font-size: 1rem;
+  font-family: 'Monaco', 'Courier New', monospace;
+  word-break: break-all;
+}
+
+.copy-btn {
+  background: rgba(229, 9, 20, 0.2);
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.copy-btn:hover {
+  background: rgba(229, 9, 20, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+}
+
+.copy-btn:active {
+  transform: scale(0.95);
+}
+
+.gift-footer {
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.enjoy-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.125rem;
+  text-align: center;
+  margin: 0;
+  font-weight: 500;
+}
+
+.close-gift-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.close-gift-btn:hover {
+  background: rgba(229, 9, 20, 0.8);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5);
+}
+
+/* Mobile Responsiveness for Gift Box */
+@media (max-width: 768px) {
+  .gift-box {
+    width: 150px;
+    height: 150px;
+  }
+
+  .gift-box-body {
+    width: 150px;
+    height: 110px;
+  }
+
+  .gift-lid {
+    width: 170px;
+    left: -10px;
+  }
+
+  .netflix-card {
+    padding: 2rem 1.5rem;
+    max-width: 90%;
+  }
+
+  .gift-title {
+    font-size: 1.5rem;
+  }
+
+  .gift-message {
+    font-size: 1rem;
+  }
+
+  .credential-value {
+    padding: 0.75rem 1rem;
+  }
+
+  .credential-value span {
+    font-size: 0.875rem;
+  }
+
+  .netflix-logo {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gift-box-container {
+    padding: 1rem;
+  }
+
+  .netflix-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .netflix-header {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .gift-title {
+    font-size: 1.25rem;
+  }
+
+  .gift-message {
+    font-size: 0.9rem;
+  }
+
+  .credentials-container {
+    gap: 1rem;
+  }
+
+  .credential-value {
+    padding: 0.6rem 0.8rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .copy-btn {
+    align-self: flex-end;
+  }
+
+  .gift-hint {
+    font-size: 1.125rem;
+  }
+
+  .netflix-logo {
+    font-size: 2rem;
   }
 }
