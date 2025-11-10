@@ -104,8 +104,11 @@ const Album = () => {
   );
   const [showGiftBox, setShowGiftBox] = useState(false);
   const [giftBoxOpened, setGiftBoxOpened] = useState(false);
+  const [easterEgg1Triggered, setEasterEgg1Triggered] = useState(false);
+  const [shakeCount, setShakeCount] = useState(0);
   const canvasRef = useRef(null);
   const lastTapRef = useRef(0);
+  const shakeTimeoutRef = useRef(null);
 
   // Extract dominant colors from image
   const extractColors = (imageSrc, index) => {
@@ -194,6 +197,11 @@ const Album = () => {
   const handleDoubleTap = () => {
     if (currentPhoto.isCover) return; // Don't flip cover page
     
+    // Check for triple tap easter egg on photo 10
+    if (currentPage === 11) {
+      handleTripleTap();
+    }
+    
     // Check if it's the last picture (photo 13, index 14)
     if (currentPage === photos.length - 1) {
       const now = Date.now();
@@ -241,7 +249,46 @@ const Album = () => {
       setIsFlipped(false); // Reset flip when changing pages
       setShowGiftBox(false); // Reset gift box
       setGiftBoxOpened(false); // Reset opened state
+      setEasterEgg1Triggered(false); // Reset easter eggs
+      setShakeCount(0);
     }
+  };
+
+  // Easter Egg 1: Triple tap on photo 10 (lab photo)
+  const handleTripleTap = () => {
+    if (currentPage !== 11) return; // Photo 10 is at index 11
+    
+    const now = Date.now();
+    const timeSinceLastTap = now - lastTapRef.current;
+    
+    if (timeSinceLastTap < 400 && timeSinceLastTap > 0) {
+      setShakeCount(prev => {
+        const newCount = prev + 1;
+        
+        // Clear existing timeout
+        if (shakeTimeoutRef.current) {
+          clearTimeout(shakeTimeoutRef.current);
+        }
+        
+        // Reset count after 1 second
+        shakeTimeoutRef.current = setTimeout(() => {
+          setShakeCount(0);
+        }, 1000);
+        
+        // Trigger easter egg on triple tap
+        if (newCount >= 3) {
+          setEasterEgg1Triggered(true);
+          setTimeout(() => setEasterEgg1Triggered(false), 5000);
+          setShakeCount(0);
+        }
+        
+        return newCount;
+      });
+    } else {
+      setShakeCount(1);
+    }
+    
+    lastTapRef.current = now;
   };
 
   const swipeConfidenceThreshold = 10000;
@@ -530,6 +577,71 @@ const Album = () => {
                       </motion.div>
                     )}
                   </motion.div>
+                </motion.div>
+              )}
+              
+              {/* Easter Egg 1: Lab Photo (Photo 10, index 11) - Triple Tap */}
+              {currentPage === 11 && easterEgg1Triggered && (
+                <motion.div
+                  className="easter-egg-overlay"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <motion.div
+                    className="easter-egg-content lab-easter-egg"
+                    initial={{ rotateZ: -10, y: 50 }}
+                    animate={{ rotateZ: 0, y: 0 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                  >
+                    <div className="easter-egg-emoji">🧪💕</div>
+                    <div className="easter-egg-text">
+                      <p className="easter-egg-title">Lab Secrets Unlocked! 😏</p>
+                      <p className="easter-egg-message">
+                        "Chemistry isn't just in the lab...<br/>
+                        The real experiment was seeing if I could make your heart race in the little dark room 😏"
+                      </p>
+                    </div>
+                    <div className="floating-hearts">
+                      {[...Array(12)].map((_, i) => (
+                        <motion.span
+                          key={i}
+                          className="floating-heart"
+                          initial={{ y: 0, opacity: 1, scale: 0 }}
+                          animate={{ 
+                            y: -200,
+                            opacity: 0,
+                            scale: [0, 1, 1, 0],
+                            rotate: Math.random() * 360
+                          }}
+                          transition={{
+                            duration: 2 + Math.random(),
+                            delay: Math.random() * 0.5,
+                            ease: "easeOut"
+                          }}
+                          style={{
+                            left: `${10 + Math.random() * 80}%`,
+                          }}
+                        >
+                          ❤️
+                        </motion.span>
+                      ))}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+
+              {/* Easter Egg Hints */}
+              {currentPage === 11 && !easterEgg1Triggered && !isFlipped && (
+                <motion.div
+                  className="easter-egg-hint"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 0.7, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, repeatDelay: 5 }}
+                >
+                  <span className="hint-icon">👆</span>
+                  <span className="hint-text">Try triple tapping...</span>
                 </motion.div>
               )}
               
